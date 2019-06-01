@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Cadastrar</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href=".">FATEC</a>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="cadastrar.html">
+              <span data-feather="home"></span>
+              Cadastrar <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="consultar.html">
+              <span data-feather="shopping-cart"></span>
+              Consultar
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Cadastar</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        </div>
+      </div>
+      <div class="row align-items-center mb-2">
+		<div class="col-6">
+			<div class="input-group">
+			  <div class="input-group-prepend">
+				<span class="input-group-text">Título:</span>
+			  </div>
+			  <input type="text" id="titulo" class="form-control">
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="input-group">
+			  <div class="input-group-prepend">
+				<span class="input-group-text">Genero:</span>
+			  </div>
+			  <input type="text" id="genero" class="form-control">
+			</div>
+		</div>
+	  </div>
+	  <div class="row align-items-center mb-2">
+		<div class="col-4">
+			<div class="input-group">
+			  <div class="input-group-prepend">
+				<span class="input-group-text">Produtora:</span>
+			  </div>
+			  <input type="text" id="produtora" class="form-control">
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="input-group">
+			  <div class="input-group-prepend">
+				<span class="input-group-text">Diretor:</span>
+			  </div>
+			  <input type="text" id="diretor" class="form-control">
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="input-group">
+			  <div class="input-group-prepend">
+				<span class="input-group-text">Ano Lançamento:</span>
+			  </div>
+			  <input type="text" id="ano_lancamento" class="form-control">
+			</div>
+		</div>
+	  </div>
+      <div class="row align-items-center mb-2">
+		<div class="col-12">
+			<h6 align="center">Sinopse</h6>
+			<textarea class="form-control" rows="3" id="sinopse"></textarea>
+		</div>
+	  </div>
+	  <div class="row align-items-center mb-3">
+	    <div class="col-4"></div>
+		<div class="col-4">
+			<button id="cadastrar" class="btn btn-success form-control">Cadastrar</button>
+		</div>
+		<div class="col-4"></div>
+	  </div>
+    </main>
+  </div>
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/feather.min.js"></script>
+<script>
+		$(document).ready(function(){
+			$("#cadastrar").click(function() {
+				var titulo = $("#titulo").val();
+				var sinopse = $("#sinopse").val();
+				var genero = $("#genero").val();
+				var ano_lancamento = $("#ano_lancamento").val();
+				var produtora = $("#produtora").val();
+				var diretor = $("#diretor").val();
+				var url = "/cadastrar_filme/"+titulo+"/"+sinopse+"/"+genero+"/"+ano_lancamento+"/"+produtora+"/"+diretor;
+				$.getJSON(url, function(data) {
+					if(data){
+						if(!alert("Filme cadastrado com sucesso!")){location.reload(1);}
+					}
+					else alert("Filme não cadastrado!");
+				});
+			});
+		});
+	</script>
+</body>
+</html>

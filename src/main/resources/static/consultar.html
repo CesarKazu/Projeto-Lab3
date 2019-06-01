@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Consultar</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+	    table {
+		    table-layout: fixed;
+		    width: 100%;
+	    }
+	    table td {
+		    word-wrap: break-word;
+		    overflow-wrap: break-word;
+	    }
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href=".">FATEC</a>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="#">Sign out</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="cadastrar.html">
+              <span data-feather="file"></span>
+              Cadastrar
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="consultar.html">
+              <span data-feather="home"></span>
+              Consultar <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Consultar</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        </div>
+      </div>
+      <div id="alterar"></div>
+      <table class="table table-bordered">
+      	<thead>
+				<tr>
+					<th>Titulo</th>
+					<th>Sinopse</th> 
+					<th>Genero</th> 
+					<th>Ano Lancamento</th> 
+					<th>Produtora</th> 
+					<th>Diretor</th> 
+					<th>Opções</th> 
+				</tr> 
+		</thead>
+		<tbody id="dados_filmes">
+		</tbody> 
+	</table>
+    </main>
+  </div>
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/feather.min.js"></script>
+<script>
+	$(document).ready(function(){
+		atualizar_tabela();
+	});
+	function atualizar_tabela(){
+		$("#dados_filmes").empty();
+		var url = "/listar_filme";
+		$.getJSON(url, function(data) {
+			var itens = [];
+			$.each(data, function(i){
+				itens.push('<tr><td class="titulo">'+ data[i].titulo +'</td><td class="sinopse">'+ data[i].sinopse + '</td><td class="genero">'+ data[i].genero + '</td><td class="ano_lancamento">'+ data[i].ano_lancamento + '</td><td class="diretor">'+ data[i].produtora + '</td><td class="produtora">'+ data[i].diretor + '</td><td><button type="button" class="btn btn-warning btn-sm alterar" id="'+data[i].id+'">Alterar</button> <button type="button" class="btn btn-danger btn-sm deletar" id="'+data[i].id+'">Deletar</button></td></tr>');
+			});
+			$("#dados_filmes").append(itens);
+			$(".deletar").click(function(){
+				var id = $(this).attr('id');
+				var url = "/deletar_filme/"+id;
+				$.getJSON(url, function(data) {
+					if(data) alert("Filme deletado com sucesso!");
+					else alert("Filme não deletado!")
+					atualizar_tabela();
+				});
+			});
+			$(".alterar").click(function(){
+				$('.alterar').prop('disabled', true);
+				$('.deletar').prop('disabled', true);
+				var id = $(this).attr('id');
+				var titulo = $(this).closest("tr").find(".titulo").text();
+				var sinopse = $(this).closest("tr").find(".sinopse").text();
+				var genero = $(this).closest("tr").find(".genero").text();
+				var ano_lancamento = $(this).closest("tr").find(".ano_lancamento").text();
+				var produtora = $(this).closest("tr").find(".produtora").text();
+				var diretor = $(this).closest("tr").find(".diretor").text();
+				var html = '<div class="row align-items-center mb-2">'+
+					'<div class="col-6">'+
+						'<div class="input-group">'+
+						  '<div class="input-group-prepend">'+
+							'<span class="input-group-text">Título:</span>'+
+						  '</div>'+
+						  '<input type="text" id="titulo" class="form-control">'+
+						'</div>'+
+					'</div>'+
+					'<div class="col-6">'+
+						'<div class="input-group">'+
+						  '<div class="input-group-prepend">'+
+							'<span class="input-group-text">Genero:</span>'+
+						  '</div>'+
+						  '<input type="text" id="genero" class="form-control">'+
+						'</div>'+
+					'</div>'+
+				  '</div>'+
+				  '<div class="row align-items-center mb-2">'+
+					'<div class="col-4">'+
+						'<div class="input-group">'+
+						  '<div class="input-group-prepend">'+
+							'<span class="input-group-text">Produtora:</span>'+
+						  '</div>'+
+						  '<input type="text" id="produtora" class="form-control">'+
+						'</div>'+
+					'</div>'+
+					'<div class="col-4">'+
+						'<div class="input-group">'+
+						  '<div class="input-group-prepend">'+
+							'<span class="input-group-text">Diretor:</span>'+
+						  '</div>'+
+						  '<input type="text" id="diretor" class="form-control">'+
+						'</div>'+
+					'</div>'+
+					'<div class="col-4">'+
+						'<div class="input-group">'+
+						  '<div class="input-group-prepend">'+
+							'<span class="input-group-text">Ano Lançamento:</span>'+
+						  '</div>'+
+						  '<input type="text" id="ano_lancamento" class="form-control">'+
+						'</div>'+
+					'</div>'+
+				  '</div>'+
+			      '<div class="row align-items-center mb-2">'+
+					'<div class="col-12">'+
+						'<h6 align="center">Sinopse</h6>'+
+						'<textarea class="form-control" rows="3" id="sinopse"></textarea>'+
+					'</div>'+
+				  '</div>'+
+				  '<div class="row align-items-center mb-3">'+
+				    '<div class="col-3"></div>'+
+					'<div class="col-3">'+
+						'<button id="salvar" class="btn btn-primary btn-sm form-control">Salvar</button>'+
+					'</div>'+
+					'<div class="col-3">'+
+						'<button id="cancelar" class="btn btn-primary btn-sm form-control">Cancelar</button>'+
+					'</div>'+
+					'<div class="col-3"></div>'+
+				  '</div>';
+			    $("#alterar").append(html);
+			     
+			    $("#titulo").val(titulo);
+				$("#sinopse").val(sinopse);
+				$("#genero").val(genero);
+				$("#ano_lancamento").val(ano_lancamento);
+				$("#produtora").val(produtora);
+				$("#diretor").val(diretor);
+				
+				$("#salvar").click(function() {
+					var titulo = $("#titulo").val();
+					var sinopse = $("#sinopse").val();
+					var genero = $("#genero").val();
+					var ano_lancamento = $("#ano_lancamento").val();
+					var produtora = $("#produtora").val();
+					var diretor = $("#diretor").val();
+					var url = "/alterar_filme/"+id+"/"+titulo+"/"+sinopse+"/"+genero+"/"+ano_lancamento+"/"+produtora+"/"+diretor;
+					$.getJSON(url, function(data) {
+						if(data) alert("Filme alterado com sucesso!");
+						else alert("Filme não alterado!")
+						$("#alterar").empty();
+						atualizar_tabela();
+					});
+				});
+				$("#cancelar").click(function() {
+					$("#alterar").empty();
+					atualizar_tabela();
+				});
+			});
+		});
+	}
+</script>
+</body>
+</html>
